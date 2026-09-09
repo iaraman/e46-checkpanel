@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "anthropic.claude-code",
+    "ms-python.python",
+    "platformio.platformio-ide",
+    "editorconfig.editorconfig",
+    "eamodio.gitlens"
+  ]
+}

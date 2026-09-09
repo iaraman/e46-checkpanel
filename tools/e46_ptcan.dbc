@@ -1,0 +1,120 @@
+VERSION "E46 PT-CAN partial decode - community sourced, unverified against factory docs"
+
+NS_ :
+    NS_DESC_
+    CM_
+    BA_DEF_
+    BA_
+    VAL_
+    CAT_DEF_
+    CAT_
+    FILTER
+    BA_DEF_DEF_
+    EV_DATA_
+    ENVVAR_DATA_
+    SGTYPE_
+    SGTYPE_VAL_
+    BA_DEF_SGTYPE_
+    BA_SGTYPE_
+    SIG_TYPE_REF_
+    VAL_TABLE_
+    SIG_GROUP_
+    SIG_VALTYPE_
+    SIGTYPE_VALTYPE_
+    BO_TX_BU_
+    BA_DEF_REL_
+    BA_REL_
+    BA_DEF_DEF_REL_
+    BU_SG_REL_
+    BU_EV_REL_
+    BU_BO_REL_
+    SG_MUL_VAL_
+
+BS_:
+
+BU_: DME ABS_ASC IKE
+
+BO_ 790 DME1_RPM: 8 DME
+ SG_ RPM : 16|16@1+ (0.1558,0) [0|10250] "rpm" IKE
+
+BO_ 809 DME2_TempThrottle: 8 DME
+ SG_ CoolantTemp : 8|8@1+ (0.75,-48.373) [-48.373|142.877] "degC" IKE
+ SG_ ThrottlePos : 40|8@1+ (1,0) [0|254] "raw_0to254" IKE
+ SG_ BrakeKickdown : 48|8@1+ (1,0) [0|255] "enum" IKE
+
+BO_ 1349 DME4_Warnings: 8 DME
+
+BO_ 339 ASC1_SpeedErrLamp: 8 ABS_ASC
+ SG_ ErrorLampBit_Byte1Bit1 : 9|1@1+ (1,0) [0|1] "bool" IKE
+
+BO_ 496 ASC2_WheelSpeed: 8 ABS_ASC
+
+BO_ 1557 IKE_Status_615: 8 IKE
+
+BO_ 1555 IKE_Odometer_613: 8 IKE
+ SG_ Odometer : 0|32@1+ (1,0) [0|4294967295] "km_or_mi_UNCONFIRMED" DME
+
+CM_ "======================================================================
+E46 PT-CAN partial decode table
+Sourced from community reverse-engineering (E46Fanatics forum, MSEXTRA/
+Megasquirt forum, and a public CANoe project for an E46 M3 cluster).
+NOT from BMW factory documentation. Verify against live traffic (candump/
+SavvyCAN) before relying on any signal here for a shipped product.
+
+Bus: PT-CAN, 500 kbps, standard 11-bit IDs.
+Tap point: CAN+/CAN- twisted pair, confirmed accessible under driver's
+side dash above the footrest, OR at DME connector X6004 pins 36/37
+(same physical bus, two documented access points - RaceCapture installs
+at the under-dash location). Power/ground pulled separately, NOT from
+this bus.
+
+CONFIDENCE NOTES:
+- DME1 (RPM) and DME2 (coolant temp/throttle/brake) bytes: cross-confirmed
+  by two independent community sources, math agrees. Reasonably confident.
+- DME4 (0x545): message-level label only (\"overheat light, oil warning,
+  EML light, check engine light, oil temperature, rpm warn field\") from
+  ONE source (GitHub CANoe project). Bit-level layout is NOT known - the
+  WarningBits_UNMAPPED signal below is a placeholder spanning the whole
+  payload. You MUST sniff this ID live against known warning states
+  (e.g. trigger low coolant, pull a bulb, etc.) to map real bit positions
+  before using it for idiot-light logic.
+- ASC1 (0x153): error lamp bit confirmed by one source; vehicle speed
+  presence confirmed but exact byte/bit position NOT documented in
+  sources found. Placeholder signal included, needs live verification.
+- ASC2 (0x1F0) wheel speed: message purpose confirmed, no byte layout
+  found. Placeholder only.
+- IKE 0x615/0x613: message-level purpose confirmed (cluster status /
+  odometer) by one source. Odometer byte order given as B0,B1 LSB/MSB
+  but source text is ambiguous whether it's 16-bit or spans further
+  bytes (B0-B3 implied elsewhere in same source) - unit (km vs mi) not
+  stated. Treat as unverified.
+
+NOT FOUND in any source searched so far - do not assume these exist on
+this bus segment without further sniffing:
+- Battery/system voltage
+- Oil pressure (E46 non-M likely has no sender at all, only a switch -
+  see DME4 oil warning bit once mapped)
+- Oil temperature byte position within DME4 (label only, no offset/scale)
+
+Decode formulas as sourced:
+- RPM (ID 0x316 / dec 790): raw 16-bit LE, two sources gave slightly
+  different scale factors (/6.42 vs the implied ~6.402 from the
+  0-65535->0-10238 mapping in the second source). Used 0.1558 = 1/6.42
+  here as the more directly-stated formula. CONFIRM against a known RPM
+  before trusting to more than +/-1-2%.
+- Coolant temp (ID 0x329 / dec 809): degC = 0.75 * raw - 48.373, agrees
+  closely with second source's endpoint values. Reasonably confident.
+======================================================================" ;
+
+CM_ BO_ 790 "RPM message. ID 0x316. Two independent sources agree on byte position and approximate scale." ;
+CM_ SG_ 790 RPM "Formula per source: RPM = hex2dec(byte3 & byte2) / 6.42. Verify scale factor against tachometer before trusting precisely." ;
+CM_ BO_ 809 "Coolant temp / throttle / brake-kickdown message. ID 0x329." ;
+CM_ SG_ 809 CoolantTemp "degC = 0.75 * byte1 - 48.373. Cross-confirmed by two sources." ;
+CM_ SG_ 809 ThrottlePos "Raw 0x00-0xFE, no confirmed scale to percent found - treat as relative/raw until calibrated." ;
+CM_ SG_ 809 BrakeKickdown "Enum, not a linear value: kickdown switch depressed = 4, brake pedal depressed = 1. Do NOT decode as scaled numeric." ;
+CM_ BO_ 1349 "DME4, ID 0x545. Contains overheat light, oil warning, EML light, check engine light, oil temp, RPM warn field per ONE source (message-level label only). Bit layout UNMAPPED - sniff live before use." ;
+CM_ BO_ 339 "ASC1, ID 0x153. Contains vehicle speed and an error-lamp control bit. Byte/bit position only confirmed for the error lamp bit." ;
+CM_ SG_ 339 ErrorLampBit_Byte1Bit1 "Bit 1 of Byte 1 turns OFF the center gauge error light when EVEN. Polarity/logic needs live confirmation - source phrasing was ambiguous on active-high vs active-low." ;
+CM_ BO_ 496 "ASC2, ID 0x1F0. Wheel speed, per one source label only. No byte layout found." ;
+CM_ BO_ 1557 "IKE status message, ID 0x615, sent from instrument cluster. Byte 3 looks like a status message per source - not confirmed further." ;
+CM_ BO_ 1555 "IKE odometer, ID 0x613, sent from instrument cluster (appears to acknowledge 0x615). Byte order and unit unconfirmed." ;
