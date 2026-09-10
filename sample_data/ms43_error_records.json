@@ -1,0 +1,101 @@
+{
+  "_comment": "Ground truth for tools/test_ms43_error_record.py. Built by hand from the raw Errorcode: bytes and decoded fields in docs/reference/inpa/*MS430DS0_fault-memory.pdf. dme_current_counter_raw is the DME's operating-hours counter at capture time (see REQ-001 SS8.2), needed to reconstruct INPA's 'aufgetreten vor (rel. BZ)' elapsed-hours figure.",
+  "records": [
+    {
+      "car": "325iT", "fault_number": 37, "description": "Switching delay main relais",
+      "errorcode_hex": "25 61 01 28 01 32 5B 00 B7 F6",
+      "error_frequency": 1, "logistic_counter": 40,
+      "dme_current_counter_raw": 47969, "expected_elapsed_hours": 87.5
+    },
+    {
+      "car": "325iT", "fault_number": 227, "description": "lambda contol tolerance Bank 1",
+      "errorcode_hex": "E3 F1 B6 28 15 0D C1 9C B8 1E",
+      "error_frequency": 182, "logistic_counter": 40,
+      "dme_current_counter_raw": 47969, "expected_elapsed_hours": 83.5
+    },
+    {
+      "car": "325iT", "fault_number": 239, "description": "burning fail Cylinder 2",
+      "errorcode_hex": "EF B7 3E 20 59 21 31 13 B9 76",
+      "error_frequency": 62, "logistic_counter": 32,
+      "dme_current_counter_raw": 47969, "expected_elapsed_hours": 49.1
+    },
+    {
+      "car": "325iT", "fault_number": 228, "description": "lambda contol tolerance Bank 2",
+      "errorcode_hex": "E4 F1 AC 28 15 0E 6E 80 B9 76",
+      "error_frequency": 172, "logistic_counter": 40,
+      "dme_current_counter_raw": 47969, "expected_elapsed_hours": 49.1
+    },
+    {
+      "car": "325iT", "fault_number": 238, "description": "burning fail Cylinder 1",
+      "errorcode_hex": "EE B6 2D 20 92 16 1F 1D B9 78",
+      "error_frequency": 45, "logistic_counter": 32,
+      "dme_current_counter_raw": 47969, "expected_elapsed_hours": 48.9
+    },
+    {
+      "car": "325iT", "fault_number": 240, "description": "burning fail Cylinder 3",
+      "errorcode_hex": "F0 B7 40 20 92 16 1F 1D B9 78",
+      "error_frequency": 64, "logistic_counter": 32,
+      "dme_current_counter_raw": 47969, "expected_elapsed_hours": 48.9
+    },
+    {
+      "car": "325iT", "fault_number": 242, "description": "burning fail Cylinder 5",
+      "errorcode_hex": "F2 B7 21 1D 9A 16 1F 1D B9 79",
+      "error_frequency": 33, "logistic_counter": 29,
+      "dme_current_counter_raw": 47969, "expected_elapsed_hours": 48.8
+    },
+    {
+      "car": "325iT", "fault_number": 241, "description": "burning fail Cylinder 4",
+      "errorcode_hex": "F1 B6 16 1D 8E 19 18 12 B9 90",
+      "error_frequency": 22, "logistic_counter": 29,
+      "dme_current_counter_raw": 47969, "expected_elapsed_hours": 46.5
+    },
+    {
+      "car": "325iT", "fault_number": 243, "description": "burning fail Cylinder 6",
+      "errorcode_hex": "F3 B2 01 1B C1 1C 24 14 BB 2B",
+      "error_frequency": 1, "logistic_counter": 27,
+      "dme_current_counter_raw": 47969, "expected_elapsed_hours": 5.4
+    },
+    {
+      "car": "325xi", "fault_number": 238, "description": "burning fail Cylinder 1",
+      "errorcode_hex": "EE B2 02 1F 6A 29 36 1D 6A A4",
+      "error_frequency": 2, "logistic_counter": 31,
+      "dme_current_counter_raw": 27354, "expected_elapsed_hours": 5.4
+    },
+    {
+      "car": "325xi", "fault_number": 242, "description": "burning fail Cylinder 5",
+      "errorcode_hex": "F2 B2 01 1E 6A 29 36 1D 6A A4",
+      "error_frequency": 1, "logistic_counter": 30,
+      "dme_current_counter_raw": 27354, "expected_elapsed_hours": 5.4
+    },
+    {
+      "car": "325xi", "fault_number": 240, "description": "burning fail Cylinder 3",
+      "errorcode_hex": "F0 B2 01 1E 6A 29 36 1D 6A A4",
+      "error_frequency": 1, "logistic_counter": 30,
+      "dme_current_counter_raw": 27354, "expected_elapsed_hours": 5.4
+    },
+    {
+      "car": "325xi", "fault_number": 243, "description": "burning fail Cylinder 6",
+      "errorcode_hex": "F3 B2 01 1E 6A 29 36 1D 6A A4",
+      "error_frequency": 1, "logistic_counter": 30,
+      "dme_current_counter_raw": 27354, "expected_elapsed_hours": 5.4
+    },
+    {
+      "car": "325xi", "fault_number": 241, "description": "burning fail Cylinder 4",
+      "errorcode_hex": "F1 B2 01 1F 75 2C 3A 20 6A AF",
+      "error_frequency": 1, "logistic_counter": 31,
+      "dme_current_counter_raw": 27354, "expected_elapsed_hours": 4.3
+    },
+    {
+      "car": "325xi", "fault_number": 214, "description": "Tacho signal unplausible",
+      "errorcode_hex": "D6 B8 0A 28 51 48 05 87 6A BC",
+      "error_frequency": 10, "logistic_counter": 40,
+      "dme_current_counter_raw": 27354, "expected_elapsed_hours": 3.0
+    },
+    {
+      "car": "325xi", "fault_number": 204, "description": "idle speed",
+      "errorcode_hex": "CC B8 01 28 21 05 10 07 6A D8",
+      "error_frequency": 1, "logistic_counter": 40,
+      "dme_current_counter_raw": 27354, "expected_elapsed_hours": 0.2
+    }
+  ]
+}

@@ -1,3 +1,4 @@
 cantools
 python-can
 pyserial
+pytest
